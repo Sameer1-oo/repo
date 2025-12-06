@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Happy Birthday</title>
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #ff7eb3, #ff758c, #ffb199);
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Poppins", sans-serif;
+    color: white;
+  }
+
+  .container {
+    text-align: center;
+    animation: fadeIn 2s ease;
+  }
+
+  h1 {
+    font-size: 4rem;
+    margin: 0;
+    text-shadow: 0px 5px 20px rgba(0,0,0,0.3);
+    animation: float 3s infinite ease-in-out;
+  }
+
+  button {
+    margin-top: 30px;
+    padding: 12px 30px;
+    font-size: 1.2rem;
+    color: #ff4d6d;
+    background: white;
+    border-radius: 40px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    transform: scale(1.1);
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-18px); }
+    100% { transform: translateY(0); }
+  }
+
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎉 Happy Birthday Komal 🎉</h1>
+    <button><a href="Birthday Site Message.html" style="text-decoration:none; color:#ff4d6d;">Surprise 🎁</a></button>
+  </div>
+
+  <!-- Background song -->
+  <audio autoplay loop>
+    <source src="/ytmp3free.cc_preet-re-dhadak-2-siddhant-chaturvedi-triptii-dimri-darshan-r-jonita-g-rochak-k-gurpreet-s-youtubemp3free.org.mp3" type="audio/mpeg">
+  </audio>
+</body>
+</html>

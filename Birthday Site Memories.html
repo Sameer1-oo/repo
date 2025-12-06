@@ -1,0 +1,437 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Komal — Birthday Surprise</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;700&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --accent:#6b5bff;
+    --soft:#eef3ff;
+    --card-bg:#fff;
+    --shadow: 0 12px 30px rgba(20,20,50,0.12);
+  }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Poppins',sans-serif;
+    background: linear-gradient(135deg,#fbfdff 0%, #f4f7ff 50%, #eef3ff 100%);
+    color:#273142;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    padding:28px;
+    overflow-x:hidden;
+  }
+
+  header{
+    text-align:center;
+    margin-top:8px;
+    margin-bottom:12px;
+  }
+
+  h1{
+    margin:0;
+    font-size:2.6rem;
+    color:var(--accent);
+    letter-spacing:0.2px;
+    animation: gentleGlow 3s infinite alternate;
+  }
+  p.lead{
+    margin:8px 0 18px;
+    color:#556;
+    font-weight:500;
+  }
+
+  @keyframes gentleGlow{
+    from{ text-shadow: 0 0 8px rgba(107,91,255,0.25); transform: translateY(0); }
+    to{ text-shadow: 0 0 20px rgba(132,118,255,0.28); transform: translateY(-3px); }
+  }
+
+  /* floating soft shapes */
+  .float-shape{
+    position:fixed;
+    border-radius:40%;
+    filter: blur(22px);
+    opacity:0.12;
+    z-index:0;
+  }
+  .shape1{ width:260px; height:260px; background:#6b5bff; right:-60px; top:30vh; }
+  .shape2{ width:180px; height:180px; background:#5bc8ff; left:-40px; top:10vh; }
+  .shape3{ width:300px; height:120px; background:#ffd47a; right:20px; bottom:-40px; }
+
+  /* gallery area */
+  .gallery{
+    display:flex;
+    gap:28px;
+    z-index:2;
+    flex-wrap:wrap;
+    justify-content:center;
+    width:100%;
+    max-width:1100px;
+    padding:20px;
+  }
+
+  .gift-box{
+    width:260px;
+    height:260px;
+    perspective:1200px;
+    position:relative;
+  }
+
+  .box-inner{
+    width:100%;
+    height:100%;
+    background:var(--card-bg);
+    border-radius:20px;
+    box-shadow: var(--shadow);
+    position:relative;
+    overflow:visible;
+    transform-style:preserve-3d;
+    transition: transform 700ms cubic-bezier(.22,.9,.3,1);
+    cursor:pointer;
+  }
+
+  /* lid + base */
+  .lid{
+    position:absolute;
+    left:12%;
+    top:-6%;
+    width:76%;
+    height:42%;
+    background:linear-gradient(180deg,var(--accent),#8476ff);
+    border-radius:14px;
+    transform-origin:50% 100%;
+    transform: rotateX(0deg);
+    box-shadow: 0 10px 18px rgba(107,91,255,0.18);
+    transition: transform 700ms cubic-bezier(.22,.9,.3,1);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:white;
+    font-weight:700;
+    letter-spacing:0.6px;
+  }
+
+  .ribbon{
+    position:absolute;
+    left:0;
+    right:0;
+    top:12%;
+    height:8px;
+    margin:0 20%;
+    background:rgba(255,255,255,0.18);
+    border-radius:6px;
+    transform:translateZ(40px);
+  }
+
+  .box-base{
+    position:absolute;
+    bottom:8%;
+    left:8%;
+    width:84%;
+    height:60%;
+    background:linear-gradient(180deg,#fff,#f6f7ff);
+    border-radius:12px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+    padding:14px;
+  }
+
+  .preview-img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    border-radius:10px;
+    opacity:0.95;
+    transition: transform 900ms ease, filter 500ms;
+    filter: saturate(0.9) contrast(0.95);
+  }
+
+  /* when open */
+  .opened .lid{
+    transform: rotateX(-110deg) translateY(-10px);
+  }
+  .opened .box-inner{
+    transform: translateY(-6px) scale(1.02);
+  }
+  .opened .preview-img{ transform: scale(0.72) translateY(6px); filter: blur(2px) brightness(0.9); }
+
+  /* gift reveals */
+  .gift-reveal{
+    position:absolute;
+    left:50%;
+    top:46%;
+    transform:translate(-50%, -10%) scale(0.2);
+    opacity:0;
+    z-index:5;
+    transition: transform 700ms cubic-bezier(.22,.9,.3,1), opacity 400ms;
+    pointer-events:none;
+  }
+  .opened .gift-reveal{
+    transform:translate(-50%,-60%) scale(1);
+    opacity:1;
+  }
+
+  .gift-card{
+    width:120px;
+    height:120px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.98);
+    box-shadow:0 14px 40px rgba(20,20,50,0.12);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-direction:column;
+    padding:12px;
+    text-align:center;
+    font-weight:600;
+  }
+
+  .gift-emoji{
+    font-size:40px;
+    margin-bottom:8px;
+  }
+
+  .gift-text{
+    font-size:13px;
+    color:#334;
+    font-weight:600;
+  }
+
+  /* small instruction button */
+  .controls{
+    margin-top:18px;
+    display:flex;
+    gap:12px;
+    align-items:center;
+    z-index:2;
+  }
+
+  .celebrate-btn{
+    padding:12px 20px;
+    border-radius:30px;
+    background:var(--accent);
+    color:#fff;
+    border:none;
+    cursor:pointer;
+    font-weight:700;
+    box-shadow: 0 8px 22px rgba(107,91,255,0.12);
+  }
+  .reset-btn{
+    padding:10px 16px;
+    border-radius:8px;
+    background:transparent;
+    color:var(--accent);
+    border:1px solid rgba(107,91,255,0.12);
+    cursor:pointer;
+    font-weight:600;
+  }
+
+  /* confetti pieces */
+  .confetti{
+    position:fixed;
+    width:10px;
+    height:18px;
+    top:-10vh;
+    z-index:1;
+    opacity:0.95;
+    transform: rotate(0deg);
+    animation: fall linear forwards;
+  }
+  @keyframes fall{
+    to{ transform: translateY(120vh) rotate(360deg); opacity:1; }
+  }
+
+  /* small footer */
+  footer{
+    margin-top:22px;
+    color:#476;
+    font-size:13px;
+    z-index:2;
+  }
+
+  /* responsive */
+  @media (max-width:780px){
+    .gift-box{ width:210px; height:210px; }
+    .lid{ left:14%; top:-8%; height:44%; }
+  }
+
+</style>
+</head>
+<body>
+
+  <!-- soft shapes -->
+  <div class="float-shape shape1"></div>
+  <div class="float-shape shape2"></div>
+  <div class="float-shape shape3"></div>
+
+  <header>
+    <h1>✨ Komal — Surprise Time ✨</h1>
+    <p class="lead">Click any gift box to open — each one hides a different little surprise (just friendly & fun!). 🎁</p>
+  </header>
+
+  <main class="gallery" role="main" aria-label="Gift gallery">
+    <!-- Box 1 -->
+    <div class="gift-box" data-index="0" aria-label="Gift box 1">
+      <div class="box-inner" tabindex="0">
+        <div class="lid">For You</div>
+        <div class="ribbon"></div>
+        <div class="box-base">
+          <img class="preview-img" src="/1.jpg" alt="memory image 1">
+        </div>
+
+        <div class="gift-reveal">
+          <div class="gift-card">
+            <div class="gift-emoji">🧁</div>
+            <div class="gift-text">A sweet treat — Happy Birthday koko!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Box 2 -->
+    <div class="gift-box" data-index="1" aria-label="Gift box 2">
+      <div class="box-inner" tabindex="0">
+        <div class="lid">Surprise</div>
+        <div class="ribbon"></div>
+        <div class="box-base">
+          <img class="preview-img" src="/hello.gif" alt="memory image 2">
+        </div>
+
+        <div class="gift-reveal">
+          <div class="gift-card">
+            <div class="gift-emoji">🎈</div>
+            <div class="gift-text">Balloons & good vibes — Enjoy! </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Box 3 -->
+    <div class="gift-box" data-index="2" aria-label="Gift box 3">
+      <div class="box-inner" tabindex="0">
+        <div class="lid">To You</div>
+        <div class="ribbon"></div>
+        <div class="box-base">
+          <img class="preview-img" src="/yes sir.gif" alt="memory image 3">
+        </div>
+
+        <div class="gift-reveal">
+          <div class="gift-card">
+            <div class="gift-emoji">📸</div>
+            <div class="gift-text">A memory — let's make more soon!</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <div class="controls" role="region" aria-label="Controls">
+    <button class="celebrate-btn" id="autoCelebrate">Celebrate 🎉</button>
+    <button class="reset-btn" id="resetAll">Reset Boxes</button>
+  </div>
+
+  <footer>Best friend vibes — warm, friendly, & respectful. No hearts — only good energy. 😊</footer>
+
+  <!-- background song: update path if needed -->
+  <audio id="bgAudio" loop>
+    <source src="/thrid page.mp3" type="audio/mpeg">
+  </audio>
+
+<script>
+  // initialize audio (play only after a user gesture in many browsers)
+  document.addEventListener('click', function initAudio(){
+    const a = document.getElementById('bgAudio');
+    if(a && a.paused){ a.play().catch(()=>{}); }
+    document.removeEventListener('click', initAudio);
+  });
+
+  // interactive box logic
+  const boxes = document.querySelectorAll('.gift-box');
+  boxes.forEach((box, idx) => {
+    const inner = box.querySelector('.box-inner');
+
+    // open on click or Enter/Space (keyboard)
+    const toggleOpen = () => {
+      if(inner.classList.contains('opened')) return; // open only once
+      inner.classList.add('opened');
+      // small confetti burst per box
+      makeConfettiBurst(box, 12);
+    };
+
+    inner.addEventListener('click', toggleOpen);
+    inner.addEventListener('keydown', (e) => {
+      if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); toggleOpen(); }
+    });
+  });
+
+  // Celebrate button -> open all boxes
+  document.getElementById('autoCelebrate').addEventListener('click', () => {
+    boxes.forEach((b, i) => {
+      setTimeout(()=> {
+        const inner = b.querySelector('.box-inner');
+        if(!inner.classList.contains('opened')){
+          inner.classList.add('opened');
+          makeConfettiBurst(b, 14);
+        }
+      }, i*220);
+    });
+    // global confetti
+    spawnConfetti(60);
+  });
+
+  // Reset
+  document.getElementById('resetAll').addEventListener('click', () => {
+    boxes.forEach(b => b.querySelector('.box-inner').classList.remove('opened'));
+  });
+
+  // confetti helpers
+  function makeConfettiBurst(container, count=18){
+    for(let i=0;i<count;i++){
+      const c = document.createElement('div');
+      c.className='confetti';
+      c.style.left = (container.getBoundingClientRect().left + container.offsetWidth * Math.random()) + 'px';
+      c.style.backgroundColor = `hsl(${Math.random()*70 + 180}, 70%, ${50 + Math.random()*10}%)`;
+      c.style.transform = `rotate(${Math.random()*360}deg)`;
+      c.style.width = `${8 + Math.random()*10}px`;
+      c.style.height = `${12 + Math.random()*12}px`;
+      c.style.animationDuration = `${2 + Math.random()*2.6}s`;
+      document.body.appendChild(c);
+      setTimeout(()=> c.remove(), 4200);
+    }
+  }
+
+  function spawnConfetti(total){
+    for(let i=0;i<total;i++){
+      const c = document.createElement('div');
+      c.className='confetti';
+      c.style.left = Math.random()*100 + 'vw';
+      c.style.backgroundColor = `hsl(${Math.random()*90 + 200}, 70%, ${48 + Math.random()*12}%)`;
+      c.style.width = `${6 + Math.random()*12}px`;
+      c.style.height = `${10 + Math.random()*18}px`;
+      c.style.animationDuration = `${3 + Math.random()*3}s`;
+      document.body.appendChild(c);
+      setTimeout(()=> c.remove(), 6000);
+    }
+  }
+
+  // small accessibility: focus outline on keyboard nav
+  document.addEventListener('keydown', (e)=>{
+    if(e.key === 'Tab'){
+      document.documentElement.style.scrollBehavior = 'smooth';
+    }
+  });
+
+  // optional: auto celebration on load (commented out)
+  // window.addEventListener('load', ()=> setTimeout(()=> document.getElementById('autoCelebrate').click(), 1500));
+</script>
+
+</body>
+</html>
