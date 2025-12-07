@@ -5,6 +5,28 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>Your Birthday Message</title>
 <style>
+  @media (max-width: 600px) {
+  .content {
+    padding: 20px;
+  }
+
+  h1 {
+    font-size: 1.9rem;
+    text-align: center;
+  }
+
+  p {
+    font-size: 1.05rem;
+    line-height: 1.55;
+  }
+
+  button {
+    width: 100%;
+    font-size: 1rem;
+    padding: 12px;
+  }
+}
+
   body {
     margin: 0;
     padding: 0;
@@ -103,7 +125,7 @@ setInterval(randomHeart, 500);
 
 <!-- Background song -->
 <audio autoplay loop>
-  <source src="/second page.mp3"type="audio/mpeg">
+  <source src="second page.mp3"type="audio/mpeg">
 </audio>
 
 </body>
